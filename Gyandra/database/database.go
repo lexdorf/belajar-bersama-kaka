@@ -3,6 +3,7 @@ package database
 var connection string
 
 func init(){
+	fmt.Println("Int dipanggil")
 	connection = "MySQL"
 }
 
