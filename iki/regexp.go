@@ -8,12 +8,12 @@ import (
 func main(){
 	var regex *regexp.Regexp = regexp.MustCompile("a([a-z])i")
 
-	fmt.Println(regex.MatchString("aiski"))
-	fmt.Println(regex.MatchString("adi"))
-	fmt.Println(regex.MatchString("aini"))
 	fmt.Println(regex.MatchString("aiki"))
+	fmt.Println(regex.MatchString("adi"))
+	fmt.Println(regex.MatchString("ani"))
+	fmt.Println(regex.MatchString("ayi"))
 
-	search := regex.FindAllString("aiski, aiki, aini, adi", -1)
+	search := regex.FindAllString("aiki, adi, ani, ayi", -1)
 	fmt.Println(search)
 }
 
