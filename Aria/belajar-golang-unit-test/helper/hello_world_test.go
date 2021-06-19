@@ -4,8 +4,134 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"runtime"
 	"testing"
 )
+
+func BenchmarkTable(b *testing.B) {
+	benchmarks := []struct{
+		name string
+		request string
+	}{
+		{
+			name: "Adi",
+			request: "Adi",
+		},
+		{
+			name: "Pramesta",
+			request: "Pramesta",
+		},
+		{
+			name: "AdiPramesta",
+			request: "Adi Pramesta",
+		},
+	}
+
+	for _, benchmark := range benchmarks {
+		b.Run(benchmark.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				HelloWorld(benchmark.request)
+			}
+		})
+	}
+	
+}
+
+func BenchmarkSub(b *testing.B) {
+	b.Run("Adi", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Adi")
+		}
+	})
+	b.Run("Pramesta", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Pramesta")
+		}
+	})
+}
+
+func BenchmarkHelloWorld(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HelloWorld("Adi")
+	}
+}
+
+func BenchmarkHelloWorldPramesta(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HelloWorld("Pramesta")
+	}
+}
+
+func TestTableHelloWorld(t *testing.T) {
+	tests := []struct{
+		name string
+		request string
+		expected string
+	}{
+		{
+			name: "Adi",
+			request: "Adi",
+			expected: "Hello Adi",
+		},
+		{
+			name: "Pramesta",
+			request: "Pramesta",
+			expected: "Hello Pramesta",
+		},
+		{
+			name: "Khannedy",
+			request: "Khannedy",
+			expected: "Hello Khannedy",
+		},
+		{
+			name: "Budi",
+			request: "Budi",
+			expected: "Hello Budi",
+		},
+		{
+			name: "Ali",
+			request: "Ali",
+			expected: "Hello Ali",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := HelloWorld(test.request)
+			require.Equal(t, test.expected, result)
+		})
+	}
+}
+
+func TestSubTest(t *testing.T) {
+	t.Run("Adi", func(t *testing.T) {
+		result := HelloWorld("Adi")
+		require.Equal(t, "Hello Adi", result, "Result must be 'Hello Adi'")
+	})
+	t.Run("Pramesta", func(t *testing.T) {
+		result := HelloWorld("Pramesta")
+		require.Equal(t, "Hello Pramesta", result, "Result must be 'Hello Pramesta'")
+	})
+}
+
+func TestMain(m *testing.M) {
+	// before
+	fmt.Println("BEFORE UNIT TEST")
+
+	m.Run()
+
+	// after
+	fmt.Println("AFTER UNIT TEST")
+}
+
+func TestSkip(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("Can not run on Mac OS")
+	}
+
+	result := HelloWorld("Adi")
+	require.Equal(t, "Hello Adi", result, "Reslut must be 'Hello Adi'")
+}
 
 func TestHelloWorldRequire(t *testing.T) {
 	result := HelloWorld("Adi")
