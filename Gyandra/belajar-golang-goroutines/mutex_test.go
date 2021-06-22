@@ -71,11 +71,11 @@ func (user *UserBalance) Lock() {
 }
 
 func (user *UserBalance) UnLock() {
-	user.Mutex.UnLock()
+	user.Mutex.Unlock()
 }
 
 func (user *UserBalance) Change(amount int) {
-	User.Balance = user.Balance + amount
+	user.Balance = user.Balance + amount
 }
 
 func Transper(user1 *UserBalance, user2 *UserBalance, amount int) {
@@ -94,17 +94,23 @@ func Transper(user1 *UserBalance, user2 *UserBalance, amount int) {
 	user1.Unlock()
 	user2.Unlock()
 }
+	
 
 func TestDeadLock(t *testing.T) {
 	user1 := UserBalance{
-		Name: "Gya",
-		Balance: 100000,
+		Name: "Eko",
+		Balance: 1000000,
 	}
 
 	user2 := UserBalance{
-		Name: "Joko",
-		Balance: 100000,
+		Name: "Budi",
+		Balance: 1000000,
 	}
+
+	go Transper(&user1, &user2, 100000)
+	go Transper(&user1, &user2, 200000)
+
+	time.Sleep(3 * time.Second)
 
 	fmt.Println("User ", user1.Name, ", Balance ", user1.Balance)
 	fmt.Println("User ", user2.Name, ", Balance ", user2.Balance)
