@@ -15,7 +15,7 @@ func DownloadFile(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	writer.Header().Add("Content-Disposition", "attachment; filename=\""+file+\"")
+	writer.Header().Add("Content-Disposition", "attachment; filename=\""+file+"\"")
 	http.ServeFile(writer, request, "./resources/"+file)
 }
 
